@@ -1,26 +1,27 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <title>Socket.IO Notification</title>
+  <title>Pop-up Notifications</title>
 </head>
 <body>
-  <h1>Notification test</h1>
+  <h1>Pop-up Notification Demo</h1>
+  <p>Open this page in multiple tabs to test real-time notifications.</p>
 
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script>
-    // Ask permission to send notifications
+    // Request permission to show notifications
     if (Notification.permission !== 'granted') {
       Notification.requestPermission();
     }
 
-    // Replace with your Render backend URL!
-    const socket = io('https://your-backend.onrender.com');
+    const socket = io();
 
     socket.on('notify', (message) => {
+      // Show browser notification
       if (Notification.permission === 'granted') {
-        new Notification('Notification', { body: message });
-      } else {
-        console.log('Notification received:', message);
+        new Notification('New Notification', {
+          body: message,
+          icon: 'https://cdn-icons-png.flaticon.com/512/1827/1827344.png' // Optional icon
+        });
       }
     });
   </script>
