@@ -6,23 +6,25 @@
   <h1>Pop-up Notification Demo</h1>
   <p>Open this page in multiple tabs to test real-time notifications.</p>
 
+  <!-- Load Socket.IO client -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
- socket.on('notify', (msg) => {
-  if ("Notification" in window) {
-    Notification.requestPermission().then(permission => {
-      if (permission === "granted") {
+    // Connect to the Socket.IO server
+    const socket = io();
+
+    // Request notification permission once on page load
+    if ("Notification" in window) {
+      Notification.requestPermission();
+    }
+
+    // Listen for 'notify' events
+    socket.on('notify', (msg) => {
+      if ("Notification" in window && Notification.permission === "granted") {
         new Notification("Notice", { body: msg });
       } else {
-        alert(msg); // Fallback if permission denied
+        alert(msg); // fallback if denied or not supported
       }
     });
-  } else {
-    alert(msg); // Fallback if not supported
-  }
-});
-
-
   </script>
 </body>
 </html>
