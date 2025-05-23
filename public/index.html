@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Pop-up Notifications</title>
@@ -6,24 +7,28 @@
   <h1>Pop-up Notification Demo</h1>
   <p>Open this page in multiple tabs to test real-time notifications.</p>
 
-  <!-- Load Socket.IO client -->
+  <button id="notifyBtn" style="display:none;">Show Notification</button>
+
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    // Connect to the Socket.IO server
     const socket = io();
 
-    // Request notification permission once on page load
-    if ("Notification" in window) {
-      Notification.requestPermission();
-    }
+    let latestMsg = '';
 
-    // Listen for 'notify' events
     socket.on('notify', (msg) => {
-      if ("Notification" in window && Notification.permission === "granted") {
-        new Notification("Notice", { body: msg });
-      } else {
-        alert(msg); // fallback if denied or not supported
-      }
+      latestMsg = msg;
+      document.getElementById('notifyBtn').style.display = 'inline-block';
+    });
+
+    document.getElementById('notifyBtn').addEventListener('click', () => {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          new Notification('Notice', { body: latestMsg });
+        } else {
+          alert(latestMsg);
+        }
+        document.getElementById('notifyBtn').style.display = 'none';
+      });
     });
   </script>
 </body>
