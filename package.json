@@ -1,0 +1,16 @@
+{
+  "name": "li-blissz",
+  "version": "2.3.3",
+  "description": "my first express project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server"
+  },
+  "author": "li-blissz",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
+  }
+}
